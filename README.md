@@ -23,6 +23,7 @@ Software Tools
 - Virtual Studio Code
 - JetBrains IDEs 
 - GitHub
+- Arduino IDE
 
 ~~~
 
