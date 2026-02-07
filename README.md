@@ -16,6 +16,8 @@ Gautham Gadipati
 Physical Tools
 - Whiteboard
 - Humor
+- Arduino Mega 2560
+- DHT11 sensor
 Software Tools
 - Google Drive products- Google Docs, Google Slides
 - Virtual Studio Code
