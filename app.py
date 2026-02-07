@@ -45,7 +45,6 @@ def check_password():
 def device_display(name):
     st.session_state.screen = OVERVIEW
 
-
 #--------------------------------SESSION VALS--------------------------------
 
 if "screen" not in st.session_state:
@@ -68,7 +67,7 @@ elif st.session_state.screen == MENU:
     st.title("Please select your device")
     with st.container(horizontal=True):
         for i, name in enumerate(st.session_state.kits):
-            st.button(name, on_click=device_display, args=(name,))
+            st.button(name, on_click=device_display, args=(name, ))
 
 
 elif st.session_state.screen == OVERVIEW:
@@ -83,13 +82,13 @@ elif st.session_state.screen == OVERVIEW:
     except Exception as e:
         st.error(f"An error occurred: {e}")
 
-    val = '75'
+    val = '75' # temp
     overview_html = overview_html.replace("__VAL__", val)
     components.html(overview_html, height=550)
     
     with st.container(horizontal=True):
-        st.button = ("Temperature and Humidity")
-        st.button = ("Air Quality")
+        st.button("Temperature and Humidity")
+        st.button("Air Quality")
 
 elif st.session_state.screen == TEMP_HUM:
     st.set_page_config(layout='wide')  
