@@ -38,6 +38,7 @@ Software Tools
 ## How The Challenges Were Overcome
 ~~~
 1) We set goals for ourselves to keep both scope creep and unrealistic goals in check.  This allowed us to focus on achieving the goals the team set on itself
+2) Technology challenges on how we planned to send data over. intially thought bluetooth, thne RFID.
 ~~~
 ## Project rules- how the project is to be completed
 ~~~
