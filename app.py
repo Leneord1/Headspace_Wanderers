@@ -1,7 +1,5 @@
 import streamlit as st
-import json
 import streamlit.components.v1 as components
-from streamlit_theme import st_theme
 import pandas as pd
 import numpy as np
 import plotly.express as px
@@ -10,7 +8,9 @@ import plotly.express as px
 # screens
 LOGIN = 0
 MENU = 1
-GRAPH_DISPLAY = 2
+OVERVIEW = 2
+TEMP_HUM = 3
+AIR_QUAL = 4
 # other
 LOW_TEMP_THRESHOLD = 20
 HI_TEMP_THRESHOLD = 30
@@ -43,7 +43,7 @@ def check_password():
 #----------------------------------CALLBACKS------------------------------------
 
 def device_display(name):
-    st.session_state.screen = GRAPH_DISPLAY
+    st.session_state.screen = OVERVIEW
 
 
 #--------------------------------SESSION VALS--------------------------------
@@ -57,20 +57,42 @@ if "kits" not in st.session_state:
 #---------------------------------SCREENS------------------------------------
 
 if st.session_state.screen == LOGIN:
+    st.set_page_config(layout='centered')
     st.title("Please enter your password")
     if check_password():
         st.session_state.screen = MENU
         st.rerun()
 
 elif st.session_state.screen == MENU:
+    st.set_page_config(layout='centered')
     st.title("Please select your device")
     with st.container(horizontal=True):
         for i, name in enumerate(st.session_state.kits):
             st.button(name, on_click=device_display, args=(name,))
 
 
-elif st.session_state.screen == GRAPH_DISPLAY:
+elif st.session_state.screen == OVERVIEW:
     st.set_page_config(layout='wide')
+    st.title("Overview")
+
+    try:
+        with open('overview.html', 'r', encoding='utf-8') as file:
+            overview_html = file.read()
+    except FileNotFoundError:
+        st.error(f"Error: The file 'chart.html' was not found.")
+    except Exception as e:
+        st.error(f"An error occurred: {e}")
+
+    val = '75'
+    overview_html = overview_html.replace("__VAL__", val)
+    components.html(overview_html, height=550)
+    
+    with st.container(horizontal=True):
+        st.button = ("Temperature and Humidity")
+        st.button = ("Air Quality")
+
+elif st.session_state.screen == TEMP_HUM:
+    st.set_page_config(layout='wide')  
     st.title("Dashboard")
 
     data = pd.read_csv("data\data.csv")
