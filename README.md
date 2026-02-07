@@ -39,3 +39,10 @@ Software Tools
 ~~~
 1) We set goals for ourselves to keep both scope creep and unrealistic goals in check.  This allowed us to focus on achieving the goals the team set on itself
 ~~~
+## Project rules- how the project is to be completed
+~~~
+While building the hardware, we want to keep the wire colors seperated by what they will be used for.
+Green wires are sensor outputs
+Red wires are power wires
+Black wires are ground wires
+~~~
