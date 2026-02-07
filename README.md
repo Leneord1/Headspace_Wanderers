@@ -46,4 +46,5 @@ While building the hardware, we want to keep the wire colors seperated by what t
 Green wires are sensor outputs
 Red wires are power wires
 Black wires are ground wires
+Blue wires are control input 
 ~~~
