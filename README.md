@@ -1,5 +1,5 @@
-# Headspace_Wanderers
-This is the repository for UGAHacks11
+# Headspace Wanderers
+This is the Headspace Wizards repository for UGAHacks11
 ## Name of Team
 ~~~
 Sankalp Amaravadi
