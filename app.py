@@ -117,7 +117,7 @@ elif st.session_state.screen == OVERVIEW:
 
     text_color = "\"#FFFFFF\"" if theme['base'] == "dark" else "\"#000000\""
 
-    data = pd.read_csv("data\data.csv")
+    data = pd.read_csv("data/data.csv")
     hum_count = (data['humidity_pct'] > HUM_THRESHOLD).sum()
     hum_sum = data['humidity_pct'].sum()
 
