@@ -1,5 +1,11 @@
 import pandas as pd
 import os
+import serial
+import time
+from io import StringIO
+
+PORT = "COM3"
+BAUD = 9600
 
 
 def csv_append(string_block):
@@ -11,9 +17,9 @@ def csv_append(string_block):
     ##records = [line.split(',') for line in lines]
 
     input_string = string_block.strip()
-    input_string = string_block.lstrip('\ufeff')
+    
     lines = input_string.split('\n')
-    records = [line.split(',') for line in lines]
+    records = [line.split(',') for line in lines if line.strip()]
 
     df = pd.DataFrame(records, columns=['timestamp', 'temperature', 'humidity'])
 
@@ -22,16 +28,46 @@ def csv_append(string_block):
 
     print(df.head())
 
-    dir_path = 'data'
-    
+    dir_path = Path("data")
     os.makedirs(dir_path, exist_ok=True)
-    
     csv_path = os.path.join(dir_path, 'data.csv')
     
     header = not os.path.exists(csv_path)
-
     df.to_csv(csv_path, mode='a', header=header, index=False)
     
 
+def listen_to_port(port="COM3", baud=9600, buffer_size=20):
+    """Listen to serial port and append data to CSV in batches"""
+    
+    ser = serial.Serial(port, baud, timeout=1)
+    print(f"Connected to {port}. Logging data...")
+    
+    buffer = []
+    
+    try:
+        while True:
+            line = ser.readline().decode("utf-8").strip()
+            
+            if line:
+                print(line)  # Show in console
+                buffer.append(line)
+                
+                if len(buffer) >= buffer_size:
+                    string_block = '\n'.join(buffer)
+                    csv_append(string_block)
+                    buffer = []  # Clear buffer
+            
+            time.sleep(0.05)
+            
+    except KeyboardInterrupt:
+        print("\nStopping...")
+        if buffer:
+            string_block = '\n'.join(buffer)
+            csv_append(string_block)
+    finally:
+        ser.close()
+        print("Serial connection closed.")
 
-csv_append("2026-02-07 11:40,24.5,25\n2026-02-07 11:45,24.6,24\n2026-02-07 11:50,24.7,23\n2026-02-07 11:55,24.8,22\n2026-02-07 12:00,24.9,21\n2026-02-07 12:05,25.0,20\n2026-02-07 12:10,25.1,19\n2026-02-07 12:15,25.2,18\n2026-02-07 12:20,25.3,17\n2026-02-07 12:25,25.4,16\n2026-02-07 12:30,25.5,15\n2026-02-07 12:35,25.6,14\n2026-02-07 12:40,25.7,13\n2026-02-07 12:45,25.8,12\n2026-02-07 12:50,25.9,11\n2026-02-07 12:55,26.0,10\n2026-02-07 13:00,26.1,09\n2026-02-07 13:05,26.2,08\n2026-02-07 13:10,26.3,07\n2026-02-07 13:15,26.4,06\n")
+if __name__ == "__main__":
+    listen_to_port(port="COM3", baud=9600, buffer_size=20)
+
