@@ -34,8 +34,10 @@ Software Tools
 ~~~
 ## How The Challenges Were Overcome
 ~~~markdown
-1) We set goals for ourselves to keep both scope creep and nonfeasible goals in check. We understood <br/>
-that there is a total of less than 30 hours for us to build a complete product, so we are taking advantage of all possible resources, including llm access through the hackathon to organize our efforts and deliver a product.
+1) We set goals for ourselves to keep both scope creep and nonfeasible goals in check. We understood 
+that there is a total of less than 30 hours for us to build a complete product, so we are taking  
+advantage of all possible resources, including llm access through the hackathon to organize our efforts  
+and deliver a product.
 
 2) The first night, we had settled on a working schedule for the hackathon the subsequent day, providing soft and hard deadlines to prevent us from squandering our time. We decided the entirety of the first night would be utilized to examine as many possibilities and analyze the challenges from Cox and State Farm to create a solution that could scale for community benefit.
 
