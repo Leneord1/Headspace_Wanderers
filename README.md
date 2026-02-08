@@ -69,3 +69,13 @@ is no connection to a computer for this operation, and due to time constraints, 
 addressed.
 ~~~
 
+## Project rules- how the project is to be completed
+
+~~~
+While building the hardware, we want to keep the wire colors seperated by what they will be used for.
+Green wires are sensor outputs
+Red wires are power wires
+Black wires are ground wires
+Blue wires are control input 
+~~~
+

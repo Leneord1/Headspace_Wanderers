@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+</head>
+<body>
+<div id="chart" style="width:100%; height:500px;"></div>
+
+<script>
+    // initialize chart
+    const myChart = echarts.init(document.getElementById('chart'));
+
+    // example text_color variable (replace dynamically if needed)
+    const text_color = __COL__;
+
+    // inject value
+    const val = __VAL__;
+
+    // chart settings
+    const option = {
+        tooltip: {
+            formatter: '{a} <br/>{b} : {c}%',
+            textStyle: { color: text_color }
+        },
+        series: [
+            {
+                name: 'Pressure',
+                type: 'gauge',
+                detail: {
+                    formatter: '{value}',
+                    color: text_color
+                },
+                axisLabel: {
+                    color: text_color
+                },
+                axisLine: {
+                    lineStyle: {
+                        color: [[1, '#5470C6']]
+                    }
+                },
+                title: {
+                    color: text_color
+                },
+                data: [
+                    {
+                        value: val,
+                        name: 'SCORE'
+                    }
+                ]
+            }
+        ],
+        textStyle: { color: text_color }
+    };
+
+    // render chart
+    myChart.setOption(option);
+</script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+</head>
+<body>
+
+<div id="chart" style="width: 100%; height: 400px;"></div>
+
+<script>
+  // initialize chart
+  const chartDom = document.getElementById('chart');
+  const myChart = echarts.init(chartDom);
+  const text_color = __COL__;
+
+  // pass in data
+  const data = __DATA__;
+
+  // extract arrays
+  const xData = data.map(d => d.timestamp);
+  const yData = data.map(d => Number(d.humidity_pct));
+
+  // chart option
+  const option = {
+    tooltip: {
+      trigger: 'axis',
+      textStyle: { color: text_color },
+      formatter: (params) => {
+        const p = params[0];
+        return `<span style="color:${text_color}">${p.axisValue}<br/>Humidity: ${p.data}%</span>`;
+      }
+    },
+    xAxis: {
+      type: 'category',
+      data: xData,
+      boundaryGap: false,
+      name: 'Time',
+      nameTextStyle: { color: text_color },
+      axisLine: { lineStyle: { color: text_color } },
+      axisLabel: { color: text_color } // make labels visible with correct color
+    },
+    yAxis: {
+      type: 'value',
+      name: 'Humidity (%)',
+      min: 0,
+      max: 100,
+      nameTextStyle: { color: text_color },
+      axisLine: { lineStyle: { color: text_color } },
+      axisLabel: { color: text_color }
+    },
+    series: [
+      {
+        name: 'Humidity (%)',
+        type: 'line',
+        smooth: true,
+        data: yData,
+        areaStyle: { opacity: 0.1 },
+        label: { color: text_color },
+        markArea: {
+          itemStyle: {
+            color: 'rgba(255, 0, 0, 0.1)'
+          },
+          data: [
+            [
+              { yAxis: 70 },
+              { yAxis: 100 }
+            ]
+          ]
+        },
+      }
+    ],
+    textStyle: { color: text_color } // default text color
+  };
+
+  // render chart
+  myChart.setOption(option);
+
+</script>
+
+</body>
+</html>
