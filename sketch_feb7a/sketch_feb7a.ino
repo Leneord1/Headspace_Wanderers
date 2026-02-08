@@ -10,7 +10,7 @@ DHT dht(DHTPIN, DHTTYPE);
 
 // Logging intervals
 const unsigned long READ_INTERVAL = 30000;   // 30 seconds
-const unsigned long PRINT_INTERVAL = 60000; // 10 minutes
+const unsigned long PRINT_INTERVAL = 600000; // 10 minutes
 
 unsigned long lastReadTime = 0;
 unsigned long lastPrintTime = 0;
@@ -40,7 +40,7 @@ void setup() {
         while (1);
     }
 
-    // Set RTC once, then comment out
+    // Set RTC once, just backup code
     // rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
 
     Serial.println("timestamp,temperature_c,humidity_percent");
