@@ -12,7 +12,7 @@ data_dir.mkdir(exist_ok=True)
 
 csv_file = data_dir / "data.csv"
 
-def main():
+def toCSV():
     # Open serial connection
     ser = serial.Serial(PORT, BAUD, timeout=1)
     print(f"Connected to {PORT}. Logging to {csv_file}")
@@ -34,4 +34,5 @@ def main():
 
 if __name__ == "__toCSV__":
     toCSV()
+
 
