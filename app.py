@@ -84,25 +84,7 @@ elif st.session_state.screen == MENU:
 
 elif st.session_state.screen == OVERVIEW:
     st.set_page_config(layout='wide')
-
-    if st.session_state.is_updated:
-        st.html("""
-            <style>
-                div[data-testid="stPopover"]>div>button {
-                    min-height: 50px;
-                    width: 60px;
-                }
-            </style>
-        """)
-        with st.container(horizontal=True):   
-            st.title("Overview")
-            with st.popover(":material/circle_notifications:", type="primary"):
-                with st.container(horizontal=True):   
-                    st.markdown("New data detected")
-                    st.button("x")
-                st.button("View")
-    else:
-        st.title("Overview")
+    st.title("Overview")
 
     try:
         with open('overview.html', 'r', encoding='utf-8') as file:
