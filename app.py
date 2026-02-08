@@ -3,6 +3,7 @@ import streamlit.components.v1 as components
 from streamlit_theme import st_theme
 import pandas as pd
 import time
+import csv_converter as cc
 
 #--------------------------------CONSTANTS-----------------------------------
 
@@ -66,6 +67,7 @@ if "is_updated" not in st.session_state:
 #---------------------------------SCREENS------------------------------------
 
 if st.session_state.screen == LOGIN:
+
     st.set_page_config(layout='centered')
     st.title("Please enter your password")
     if check_password():
@@ -96,6 +98,8 @@ elif st.session_state.screen == OVERVIEW:
         st.error(f"An error occurred: {e}")
 
     theme = st_theme()
+
+    cc.listen_to_port(port="COM3", baud=9600)
 
     with st.spinner("Wait for it...", show_time=True):
         time.sleep(1)
