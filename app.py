@@ -61,9 +61,9 @@ if "screen" not in st.session_state:
     st.session_state.screen = LOGIN
 
 if "kits" not in st.session_state:
-    st.session_state.kits = [["Lexus Monitor", True], 
-                             ["Porsche Monitor", False], 
-                             ["Truck Monitor", False]]
+    st.session_state.kits = [["Engine Bay", True], 
+                             ["Fuse Box", False], 
+                             ["Passenger Fuse Box", False]]
 
 if "is_updated" not in st.session_state:
     st.session_state.is_updated = False
