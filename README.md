@@ -3,13 +3,15 @@ This is the Headspace Wizards repository for UGAHacks11
 ## Name of Team
 ~~~
 Sankalp Amaravadi
+Gautham Gadipati
 Kahmin Keller
 Mathew Martin
-Gautham Gadipati
 ~~~
 ## Purpose of Project
-~~~
-The purpose of the project is to create a hardware and software product that meets demand in a niche for recovery proceeding a disaster, specifically where automotives are affected, as these are the backbone of American infrastructure and worklife.
+~~~markdown
+The purpose of the project is to create a hardware and software product that meets demand in a niche  
+for recovery proceeding a disaster, specifically where automotives are affected, as these are the  
+backbone of American infrastructure and worklife.
 ~~~
 ## Tools Used
 ~~~
