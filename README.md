@@ -44,3 +44,4 @@ Software Tools
 
 5) A major roadblock hit was accessing the data created by the arduino. The task set was to at the very least create capability for the information from the arduino to be exported to a csv file which is easily handled by the python code. The team was capable of employing the Putty program to access the serial port of the arduino runtime. This allowed the team to run the arduino and export the data received through the sensors directly to a csv file. Though, this does not address data accumulation when there is no connection to a computer for this operation, and due to time constraints, this will not be addressed.
 ~~~
+
