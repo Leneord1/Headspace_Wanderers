@@ -2,12 +2,10 @@ import streamlit as st
 import streamlit.components.v1 as components
 from streamlit_theme import st_theme
 import pandas as pd
-import numpy as np
-import plotly.express as px
-import json
 import time
 
 #--------------------------------CONSTANTS-----------------------------------
+
 # screens
 LOGIN = 0
 MENU = 1
@@ -21,6 +19,7 @@ HI_TEMP_THRESHOLD = 30
 HUM_THRESHOLD = 60
 
 #----------------------------------LOGIN------------------------------------
+
 def check_password():
 
     def password_entered():
