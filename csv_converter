@@ -1,0 +1,37 @@
+import pandas as pd
+import os
+
+
+def csv_append(string_block):
+    
+    input_string = string_block
+    ## Test Data: "2026-DDDD 10:00,22.5,45\n2026-02-07 10:05,22.6,44\n2026-02-07 10:10,22.7,43\n2026-02-07 10:15,22.8,42\n2026-02-07 10:20,22.9,41\n2026-02-07 10:25,23.0,40\n2026-02-07 10:30,23.1,39\n2026-02-07 10:35,23.2,38\n2026-02-07 10:40,23.3,37\n2026-02-07 10:45,23.4,36\n2026-02-07 10:50,23.5,35\n2026-02-07 10:55,23.6,34\n2026-02-07 11:00,23.7,33\n2026-02-07 11:05,23.8,32\n2026-02-07 11:10,23.9,31\n2026-02-07 11:15,24.0,30\n2026-02-07 11:20,24.1,29\n2026-02-07 11:25,24.2,28\n2026-02-07 11:30,24.3,27\n2026-02-07 11:35,24.4,26\n"
+    ##lines = input_string.strip().split('\n')
+
+    ##records = [line.split(',') for line in lines]
+
+    input_string = string_block.strip()
+    input_string = string_block.lstrip('\ufeff')
+    lines = input_string.split('\n')
+    records = [line.split(',') for line in lines]
+
+    df = pd.DataFrame(records, columns=['timestamp', 'temperature', 'humidity'])
+
+    df['temperature'] = pd.to_numeric(df['temperature'])
+    df['humidity'] = pd.to_numeric(df['humidity'])
+
+    print(df.head())
+
+    dir_path = 'data'
+    
+    os.makedirs(dir_path, exist_ok=True)
+    
+    csv_path = os.path.join(dir_path, 'data.csv')
+    
+    header = not os.path.exists(csv_path)
+
+    df.to_csv(csv_path, mode='a', header=header, index=False)
+    
+
+
+csv_append("2026-02-07 11:40,24.5,25\n2026-02-07 11:45,24.6,24\n2026-02-07 11:50,24.7,23\n2026-02-07 11:55,24.8,22\n2026-02-07 12:00,24.9,21\n2026-02-07 12:05,25.0,20\n2026-02-07 12:10,25.1,19\n2026-02-07 12:15,25.2,18\n2026-02-07 12:20,25.3,17\n2026-02-07 12:25,25.4,16\n2026-02-07 12:30,25.5,15\n2026-02-07 12:35,25.6,14\n2026-02-07 12:40,25.7,13\n2026-02-07 12:45,25.8,12\n2026-02-07 12:50,25.9,11\n2026-02-07 12:55,26.0,10\n2026-02-07 13:00,26.1,09\n2026-02-07 13:05,26.2,08\n2026-02-07 13:10,26.3,07\n2026-02-07 13:15,26.4,06\n")
