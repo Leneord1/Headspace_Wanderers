@@ -12,12 +12,17 @@
 
     // example text_color variable (replace dynamically if needed)
     const text_color = __COL__;
+    const title = __TITLE__;
 
     // inject value
     const val = __VAL__;
 
     // chart settings
     const option = {
+        title: {
+            text: title,
+            textStyle: {color: text_color}
+        },
         tooltip: {
             formatter: '{a} <br/>{b} : {c}%',
             textStyle: { color: text_color }

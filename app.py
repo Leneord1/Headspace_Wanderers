@@ -13,7 +13,7 @@ MENU = 1
 OVERVIEW = 2
 
 # other
-TEMP_THRESHOLD = 37
+TEMP_THRESHOLD = 55
 HUM_THRESHOLD = 60
 
 #----------------------------------LOGIN------------------------------------
@@ -132,6 +132,9 @@ elif st.session_state.screen == OVERVIEW:
 
     hum_overview_html = hum_overview_html.replace("__COL__", text_color)
     temp_overview_html = temp_overview_html.replace("__COL__", text_color)
+
+    hum_overview_html = hum_overview_html.replace("__TITLE__", "\"Humidity\"")
+    temp_overview_html = temp_overview_html.replace("__TITLE__", "\"Temperature\"")
 
     left, right = st.columns(2)
     with left:
