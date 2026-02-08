@@ -28,7 +28,8 @@ Software Tools
 
 ## Public Frameworks (APIs and similar) Used
 ~~~
-
+1) Streamlit Frontend Python Framework
+2) Apache Echarts Declarative Web-based Visualization Framework
 ~~~
 ## Challenges Faced
 ~~~markdown
