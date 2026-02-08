@@ -2,3 +2,4 @@ streamlit
 st_theme  
 pandas
 numpy
+pyserial
