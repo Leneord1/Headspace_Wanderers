@@ -3,84 +3,77 @@ import os
 import serial
 import time
 from io import StringIO
+from pathlib import Path
 
 PORT = "COM3"
 BAUD = 9600
 
 
 def csv_append(string_block):
-    
-    input_string = string_block
-    ## Test Data: "2026-DDDD 10:00,22.5,45\n2026-02-07 10:05,22.6,44\n2026-02-07 10:10,22.7,43\n2026-02-07 10:15,22.8,42\n2026-02-07 10:20,22.9,41\n2026-02-07 10:25,23.0,40\n2026-02-07 10:30,23.1,39\n2026-02-07 10:35,23.2,38\n2026-02-07 10:40,23.3,37\n2026-02-07 10:45,23.4,36\n2026-02-07 10:50,23.5,35\n2026-02-07 10:55,23.6,34\n2026-02-07 11:00,23.7,33\n2026-02-07 11:05,23.8,32\n2026-02-07 11:10,23.9,31\n2026-02-07 11:15,24.0,30\n2026-02-07 11:20,24.1,29\n2026-02-07 11:25,24.2,28\n2026-02-07 11:30,24.3,27\n2026-02-07 11:35,24.4,26\n"
-    ##lines = input_string.strip().split('\n')
-
-    ##records = [line.split(',') for line in lines]
-
-    input_string = string_block.strip()
-    
-    #before print statements
-    #lines = input_string.split('\n')
-    #records = [line.split(',')  for line in lines if line.strip()]
-
-    
-    lines = input_string.split('\n')
-    records = []
-    for line in lines:
-        if line.strip():  # Skip empty lines
-            record = line.split(',')
-            print(f"Processing: '{line.strip()}' -> {record}")  # Debug print
-            records.append(record)
 
 
+    try:
+        input_string = string_block.strip()
 
-    df = pd.DataFrame(records, columns=['timestamp', 'temperature', 'humidity'])
+        lines = input_string.split('\n')
+        records = []
+        for line in lines:
+            if line.strip():
+                record = line.split(',')
+                records.append(record)
 
-    df['temperature'] = pd.to_numeric(df['temperature'])
-    df['humidity'] = pd.to_numeric(df['humidity'])
 
-    print(df.head())
+        if len(records) == 0:
+            print("No records")
+            return
 
-    dir_path = Path("data")
-    os.makedirs(dir_path, exist_ok=True)
-    csv_path = os.path.join(dir_path, 'data.csv')
-    
-    header = not os.path.exists(csv_path)
-    df.to_csv(csv_path, mode='a', header=header, index=False)
-    
+        df = pd.DataFrame(records, columns=['timestamp', 'temperature', 'humidity'])
 
-def listen_to_port(port="COM3", baud=9600, buffer_size=20):
-    """Listen to serial port and append data to CSV in batches"""
-    
-    ser = serial.Serial(port, baud, timeout=1)
-    print(f"Connected to {port}. Logging data...")
-    
-    buffer = []
-    
+        df['temperature'] = pd.to_numeric(df['temperature'], errors='coerce')
+        df['humidity'] = pd.to_numeric(df['humidity'], errors='coerce')
+
+        print(df.head())
+
+        dir_path = Path("data")
+        os.makedirs(dir_path, exist_ok=True)
+        csv_path = os.path.join(dir_path, 'data.csv')
+
+        df.to_csv(csv_path, mode='a', header=False, index=False)
+
+    except Exception as e:
+        print(f"ERROR in csv_append: {type(e).__name__}: {e}")
+        import traceback
+        traceback.print_exc()
+
+
+def listen_to_port(port="COM3", baud=9600):
+
+    print(f"Attempting to connect to {port} at {baud} baud...")
+
+    try:
+        ser = serial.Serial(port, baud, timeout=1)
+    except Exception as e:
+        print(f"Failed to connect to {port}: {e}")
+        return
+
     try:
         while True:
-            line = ser.readline().decode("utf-8").strip()
-            
+            line = ser.readline().decode("utf-8", errors='ignore').strip()
+
             if line:
-                print(line)  # Show in console
-                buffer.append(line)
-                
-                if len(buffer) >= buffer_size:
-                    string_block = '\n'.join(buffer)
-                    csv_append(string_block)
-                    buffer = []  # Clear buffer
-            
+                csv_append(line)
+
             time.sleep(0.05)
-            
-    except KeyboardInterrupt:
-        print("\nStopping...")
-        if buffer:
-            string_block = '\n'.join(buffer)
-            csv_append(string_block)
+
+
+    except Exception as e:
+        print(f"\nERROR: {type(e).__name__}: {e}")
+        import traceback
+        traceback.print_exc()
     finally:
         ser.close()
-        print("Serial connection closed.")
+        print("Connection closed")
+
 
 if __name__ == "__main__":
-    listen_to_port(port="COM3", baud=9600, buffer_size=20)
-
-
+    listen_to_port(port="COM3", baud=9600)
