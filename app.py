@@ -1,16 +1,20 @@
 import streamlit as st
 import streamlit.components.v1 as components
+from streamlit_theme import st_theme
 import pandas as pd
 import numpy as np
 import plotly.express as px
+import json
+import time
 
 #--------------------------------CONSTANTS-----------------------------------
 # screens
 LOGIN = 0
 MENU = 1
 OVERVIEW = 2
-TEMP_HUM = 3
-AIR_QUAL = 4
+
+TEST = -1
+
 # other
 LOW_TEMP_THRESHOLD = 20
 HI_TEMP_THRESHOLD = 30
@@ -45,6 +49,12 @@ def check_password():
 def device_display(name):
     st.session_state.screen = OVERVIEW
 
+def total_score():
+    return "75"
+
+def back():
+    st.session_state.screen -= 1
+
 #--------------------------------SESSION VALS--------------------------------
 
 if "screen" not in st.session_state:
@@ -52,6 +62,9 @@ if "screen" not in st.session_state:
 
 if "kits" not in st.session_state:
     st.session_state.kits = ["Lexus Monitor", "Porsche Monitor", "Truck Monitor"]
+
+if "is_updated" not in st.session_state:
+    st.session_state.is_updated = False
 
 #---------------------------------SCREENS------------------------------------
 
@@ -69,41 +82,66 @@ elif st.session_state.screen == MENU:
         for i, name in enumerate(st.session_state.kits):
             st.button(name, on_click=device_display, args=(name, ))
 
-
 elif st.session_state.screen == OVERVIEW:
     st.set_page_config(layout='wide')
-    st.title("Overview")
+
+    if st.session_state.is_updated:
+        st.html("""
+            <style>
+                div[data-testid="stPopover"]>div>button {
+                    min-height: 50px;
+                    width: 60px;
+                }
+            </style>
+        """)
+        with st.container(horizontal=True):   
+            st.title("Overview")
+            with st.popover(":material/circle_notifications:", type="primary"):
+                with st.container(horizontal=True):   
+                    st.markdown("New data detected")
+                    st.button("x")
+                st.button("View")
+    else:
+        st.title("Overview")
 
     try:
         with open('overview.html', 'r', encoding='utf-8') as file:
             overview_html = file.read()
+        with open('humidity.html', 'r', encoding='utf-8') as file:
+            humidity_html = file.read()
+        with open('temperature.html', 'r', encoding='utf-8') as file:
+            temperature_html = file.read()
     except FileNotFoundError:
         st.error(f"Error: The file 'chart.html' was not found.")
     except Exception as e:
         st.error(f"An error occurred: {e}")
 
-    val = '75' # temp
-    overview_html = overview_html.replace("__VAL__", val)
-    components.html(overview_html, height=550)
-    
-    with st.container(horizontal=True):
-        st.button("Temperature and Humidity")
-        st.button("Air Quality")
+    theme = st_theme()
 
-elif st.session_state.screen == TEMP_HUM:
-    st.set_page_config(layout='wide')  
-    st.title("Dashboard")
+    with st.spinner("Wait for it...", show_time=True):
+        time.sleep(1)
+
+    text_color = "\"#FFFFFF\"" if theme['base'] == "dark" else "\"#000000\""
+
+    val = total_score()
+    overview_html = overview_html.replace("__VAL__", val)
+    overview_html = overview_html.replace("__COL__", text_color)
+    components.html(overview_html, height=550)
 
     data = pd.read_csv("data\data.csv")
 
-    #-----------------Humidity Display-----------------
+    #-----------------Humidity Graph-----------------
 
-    fig = px.line(data, x='timestamp', y='humidity_pct', title='Humidity')
-    
-    st.plotly_chart(fig)
+    humidity_html = humidity_html.replace("__DATA__", data.to_json(orient='records'))
+    humidity_html = humidity_html.replace("__COL__", text_color)
 
-    #-----------------Temperature Display-----------------
+    components.html(humidity_html, height=550)
 
-    fig = px.line(data, x='timestamp', y='temperature_c', title='Temperature')
-    
-    st.plotly_chart(fig)
+    #----------------Temperature Graph-----------------
+
+    temperature_html = temperature_html.replace("__DATA__", data.to_json(orient='records'))
+    temperature_html = temperature_html.replace("__COL__", text_color)
+
+    components.html(temperature_html, height=550)
+
+    st.button("<-", on_click=back)
