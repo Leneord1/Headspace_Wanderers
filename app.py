@@ -13,7 +13,7 @@ MENU = 1
 OVERVIEW = 2
 
 # other
-TEMP_THRESHOLD = 37
+TEMP_THRESHOLD = 55
 HUM_THRESHOLD = 60
 
 #----------------------------------LOGIN------------------------------------
@@ -118,6 +118,7 @@ elif st.session_state.screen == OVERVIEW:
     text_color = "\"#FFFFFF\"" if theme['base'] == "dark" else "\"#000000\""
 
     data = pd.read_csv("data\data.csv")
+    data = data.dropna(subset=['humidity_pct'])
     hum_count = (data['humidity_pct'] > HUM_THRESHOLD).sum()
     hum_sum = data['humidity_pct'].sum()
 
@@ -132,6 +133,9 @@ elif st.session_state.screen == OVERVIEW:
 
     hum_overview_html = hum_overview_html.replace("__COL__", text_color)
     temp_overview_html = temp_overview_html.replace("__COL__", text_color)
+
+    hum_overview_html = hum_overview_html.replace("__TITLE__", "\"Humidity\"")
+    temp_overview_html = temp_overview_html.replace("__TITLE__", "\"Temperature\"")
 
     left, right = st.columns(2)
     with left:
