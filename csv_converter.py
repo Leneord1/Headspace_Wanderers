@@ -18,8 +18,20 @@ def csv_append(string_block):
 
     input_string = string_block.strip()
     
+    #before print statements
+    #lines = input_string.split('\n')
+    #records = [line.split(',')  for line in lines if line.strip()]
+
+    
     lines = input_string.split('\n')
-    records = [line.split(',') for line in lines if line.strip()]
+    records = []
+    for line in lines:
+        if line.strip():  # Skip empty lines
+            record = line.split(',')
+            print(f"Processing: '{line.strip()}' -> {record}")  # Debug print
+            records.append(record)
+
+
 
     df = pd.DataFrame(records, columns=['timestamp', 'temperature', 'humidity'])
 
@@ -70,4 +82,5 @@ def listen_to_port(port="COM3", baud=9600, buffer_size=20):
 
 if __name__ == "__main__":
     listen_to_port(port="COM3", baud=9600, buffer_size=20)
+
 
